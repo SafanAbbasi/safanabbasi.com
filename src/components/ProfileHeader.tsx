@@ -19,7 +19,7 @@ export default function ProfileHeader() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="relative h-[120px] w-[120px] overflow-hidden rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 p-1">
+      <div className="relative h-[120px] w-[120px] overflow-hidden rounded-full p-1" style={{ backgroundColor: "#0d9488" }}>
         {imgError ? (
           <div className="flex h-full w-full items-center justify-center rounded-full bg-white text-3xl font-bold text-gray-700 dark:bg-gray-900 dark:text-gray-200">
             {initials}

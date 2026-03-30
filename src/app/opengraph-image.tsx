@@ -36,8 +36,7 @@ export default function OGImage() {
               width: 100,
               height: 100,
               borderRadius: "50%",
-              background:
-                "linear-gradient(135deg, #a855f7, #ec4899, #f97316)",
+              background: "#0d9488",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
