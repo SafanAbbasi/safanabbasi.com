@@ -15,7 +15,6 @@ import {
   SiTerraform,
   SiAngular,
   SiOpenai,
-  SiGooglecloud,
   SiJavascript,
   SiHtml5,
   SiCss,
@@ -33,6 +32,7 @@ import {
 } from "react-icons/si";
 import { FaAws, FaDatabase } from "react-icons/fa";
 import { VscAzure, VscAzureDevops } from "react-icons/vsc";
+import { GooglecloudOriginal } from "devicons-react";
 
 function IconCursor({ className }: { className?: string }) {
   return (
@@ -79,7 +79,7 @@ function IconChevron({ className }: { className?: string }) {
 
 interface Skill {
   name: string;
-  icon?: FC<{ className?: string }>;
+  icon?: FC<{ className?: string; size?: number }>;
   color?: string;
 }
 
@@ -126,7 +126,7 @@ const skillGroups: SkillGroup[] = [
     skills: [
       { name: "Azure", icon: VscAzure, color: "#0078D4" },
       { name: "AWS", icon: FaAws, color: "#FF9900" },
-      { name: "GCP", icon: SiGooglecloud, color: "#4285F4" },
+      { name: "GCP", icon: GooglecloudOriginal },
       { name: "Docker", icon: SiDocker, color: "#2496ED" },
       { name: "Kubernetes", icon: SiKubernetes, color: "#326CE5" },
       { name: "Terraform", icon: SiTerraform, color: "#7B42BC" },
@@ -209,8 +209,8 @@ export default function SkillsSection() {
                     }}
                   >
                     {skill.icon && (
-                      <span className="shrink-0" style={{ color: skill.color }}>
-                        <skill.icon className="h-4 w-4" />
+                      <span className="flex shrink-0 items-center" style={{ color: skill.color }}>
+                        <skill.icon className="h-4 w-4" size={16} />
                       </span>
                     )}
                     {skill.name}
