@@ -27,6 +27,8 @@ import {
   SiCplusplus,
   SiVuedotjs,
   SiGithubactions,
+  SiSupabase,
+  SiClaude,
 } from "react-icons/si";
 import { FaAws, FaDatabase } from "react-icons/fa";
 import { VscAzure, VscAzureDevops } from "react-icons/vsc";
@@ -54,7 +56,8 @@ const skillGroups: SkillGroup[] = [
       { name: "Gemini APIs" },
       { name: "ChromaDB" },
       { name: "GitHub Copilot", icon: SiGithubactions, color: "#2088FF" },
-      { name: "Claude Code" },
+      { name: "Claude Code", icon: SiClaude, color: "#D97757" },
+      { name: "Cursor" },
     ],
   },
   {
@@ -86,6 +89,7 @@ const skillGroups: SkillGroup[] = [
       { name: "SQL Server", icon: FaDatabase, color: "#CC2927" },
       { name: "PostgreSQL", icon: SiPostgresql, color: "#4169E1" },
       { name: "Grafana", icon: SiGrafana, color: "#F46800" },
+      { name: "Supabase", icon: SiSupabase, color: "#3FCF8E" },
     ],
   },
   {
