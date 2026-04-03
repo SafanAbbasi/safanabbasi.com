@@ -33,6 +33,9 @@ import {
   Download,
   Trash2,
   MessageSquare,
+  Reply,
+  Send,
+  Check,
 } from "lucide-react";
 
 interface AnalyticsData {
@@ -65,6 +68,7 @@ interface MessageRow {
   email: string;
   message: string;
   created_at: string;
+  replied_at: string | null;
 }
 
 export default function AdminPage() {
@@ -85,6 +89,10 @@ export default function AdminPage() {
 
   const [newSlug, setNewSlug] = useState("");
   const [newDestination, setNewDestination] = useState("");
+
+  const [replyingTo, setReplyingTo] = useState<number | null>(null);
+  const [replyText, setReplyText] = useState("");
+  const [replyStatus, setReplyStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   const supabase = createBrowserSupabaseClient();
 
@@ -211,6 +219,31 @@ export default function AdminPage() {
     if (!confirm("Delete this message?")) return;
     await supabase.from("messages").delete().eq("id", id);
     fetchData();
+  };
+
+  const handleReply = async (id: number) => {
+    if (!replyText.trim()) return;
+    setReplyStatus("sending");
+    try {
+      const res = await fetch(`/api/messages/${id}/reply`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reply: replyText }),
+      });
+      if (res.ok) {
+        setReplyStatus("sent");
+        setReplyText("");
+        setTimeout(() => {
+          setReplyingTo(null);
+          setReplyStatus("idle");
+        }, 1500);
+        fetchData();
+      } else {
+        setReplyStatus("error");
+      }
+    } catch {
+      setReplyStatus("error");
+    }
   };
 
   const getClickCount = (linkId: string) =>
@@ -580,6 +613,12 @@ export default function AdminPage() {
                         >
                           {msg.email}
                         </a>
+                        {msg.replied_at && (
+                          <span className="flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-600">
+                            <Check className="h-3 w-3" />
+                            Replied
+                          </span>
+                        )}
                       </div>
                       <p className="mt-1 text-sm whitespace-pre-wrap text-gray-600">
                         {msg.message}
@@ -592,15 +631,87 @@ export default function AdminPage() {
                           hour: "numeric",
                           minute: "2-digit",
                         })}
+                        {msg.replied_at && (
+                          <> &middot; Replied {new Date(msg.replied_at).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "2-digit",
+                          })}</>
+                        )}
                       </p>
                     </div>
-                    <button
-                      onClick={() => handleDeleteMessage(msg.id)}
-                      className="shrink-0 rounded-lg p-2 text-gray-300 transition-colors hover:bg-red-50 hover:text-red-500"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
+                    <div className="flex shrink-0 items-center gap-1">
+                      <button
+                        onClick={() => {
+                          setReplyingTo(replyingTo === msg.id ? null : msg.id);
+                          setReplyText("");
+                          setReplyStatus("idle");
+                        }}
+                        className="rounded-lg p-2 text-gray-300 transition-colors hover:bg-violet-50 hover:text-violet-500"
+                        title="Reply"
+                      >
+                        <Reply className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteMessage(msg.id)}
+                        className="rounded-lg p-2 text-gray-300 transition-colors hover:bg-red-50 hover:text-red-500"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
                   </div>
+
+                  {/* Inline reply form */}
+                  {replyingTo === msg.id && (
+                    <div className="mt-3 rounded-xl border border-violet-100 bg-violet-50/50 p-4">
+                      <p className="mb-2 text-xs font-medium text-violet-600">
+                        Replying to {msg.name} &lt;{msg.email}&gt;
+                      </p>
+                      <textarea
+                        value={replyText}
+                        onChange={(e) => setReplyText(e.target.value)}
+                        placeholder="Type your reply..."
+                        rows={3}
+                        className="w-full rounded-lg border border-violet-200 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-100"
+                        disabled={replyStatus === "sending" || replyStatus === "sent"}
+                      />
+                      <div className="mt-2 flex items-center justify-between">
+                        <p className="text-xs text-gray-400">
+                          From: contact@safanabbasi.com
+                        </p>
+                        <div className="flex items-center gap-2">
+                          {replyStatus === "error" && (
+                            <p className="text-xs text-red-500">Failed to send. Try again.</p>
+                          )}
+                          {replyStatus === "sent" && (
+                            <p className="flex items-center gap-1 text-xs text-emerald-600">
+                              <Check className="h-3 w-3" /> Sent!
+                            </p>
+                          )}
+                          <button
+                            onClick={() => {
+                              setReplyingTo(null);
+                              setReplyText("");
+                              setReplyStatus("idle");
+                            }}
+                            className="rounded-lg px-3 py-1.5 text-xs font-medium text-gray-500 hover:bg-gray-100"
+                            disabled={replyStatus === "sending"}
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            onClick={() => handleReply(msg.id)}
+                            disabled={!replyText.trim() || replyStatus === "sending" || replyStatus === "sent"}
+                            className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 px-4 py-1.5 text-xs font-medium text-white shadow-sm transition-opacity hover:opacity-90 disabled:opacity-50"
+                          >
+                            <Send className="h-3 w-3" />
+                            {replyStatus === "sending" ? "Sending..." : "Send Reply"}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
