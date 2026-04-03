@@ -29,6 +29,7 @@ import {
   SiGithubactions,
   SiSupabase,
   SiClaude,
+  SiGithubcopilot,
 } from "react-icons/si";
 import { FaAws, FaDatabase } from "react-icons/fa";
 import { VscAzure, VscAzureDevops } from "react-icons/vsc";
@@ -95,12 +96,12 @@ const skillGroups: SkillGroup[] = [
     skills: [
       { name: "RAG Pipelines" },
       { name: "MCP" },
-      { name: "OpenAI APIs", icon: SiOpenai, color: "#412991" },
+      { name: "OpenAI APIs", icon: SiOpenai, color: "#A78BFA" },
       { name: "Gemini APIs" },
       { name: "ChromaDB" },
-      { name: "GitHub Copilot", icon: SiGithubactions, color: "#2088FF" },
-      { name: "Claude Code", icon: SiClaude, color: "#D97757" },
-      { name: "Cursor", icon: IconCursor },
+      { name: "GitHub Copilot", icon: SiGithubcopilot, color: "#8B5CF6" },
+      { name: "Claude Code", icon: SiClaude, color: "#F0A67A" },
+      { name: "Cursor", icon: IconCursor, color: "#EDECEC" },
     ],
   },
   {
