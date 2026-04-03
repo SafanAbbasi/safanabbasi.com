@@ -178,7 +178,7 @@ export default function ContactSection() {
         </motion.div>
 
         {/* Copyright */}
-        <p className="mt-12 text-center text-xs text-gray-400 dark:text-gray-600">
+        <p className="mt-12 text-center text-xs text-gray-500 dark:text-gray-400">
           &copy; {new Date().getFullYear()} Safan Abbasi
         </p>
       </div>

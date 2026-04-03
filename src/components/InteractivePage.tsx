@@ -204,7 +204,7 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <span className="text-xs font-medium tracking-wider text-gray-400 uppercase dark:text-gray-500">
+            <span className="text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400">
               Scroll to explore
             </span>
             <motion.svg
