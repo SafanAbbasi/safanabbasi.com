@@ -43,6 +43,12 @@ export async function POST(
     return Response.json({ error: "Message not found" }, { status: 404 });
   }
 
+  // Validate stored email before sending
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(message.email)) {
+    return Response.json({ error: "Invalid recipient email" }, { status: 400 });
+  }
+
   // Send email via Resend
   const resend = getResend();
   const { error: emailError } = await resend.emails.send({

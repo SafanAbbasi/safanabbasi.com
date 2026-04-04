@@ -3,6 +3,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 const RATE_LIMIT_MAX = 3;
 const RATE_LIMIT_WINDOW_MINUTES = 15;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -22,6 +23,14 @@ export async function POST(request: NextRequest) {
   if (!name || !email || !message) {
     return NextResponse.json(
       { error: "Name, email, and message are required" },
+      { status: 400 }
+    );
+  }
+
+  // Email format validation
+  if (!EMAIL_REGEX.test(email)) {
+    return NextResponse.json(
+      { error: "Invalid email address" },
       { status: 400 }
     );
   }
