@@ -45,6 +45,65 @@ export default function RootLayout({
         </Providers>
         <Analytics />
         <SpeedInsights />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "WebSite",
+                  "name": "Safan Abbasi",
+                  "url": "https://www.safanabbasi.com",
+                },
+                {
+                  "@type": "Person",
+                  "name": "Safan Abbasi",
+                  "url": "https://www.safanabbasi.com",
+                  "jobTitle": "Software Engineer",
+                  "description":
+                    "Full-Stack Software Engineer & NASA Patent Co-Inventor. Building scalable solutions with AI, cloud architecture, and modern web technologies.",
+                  "sameAs": [
+                    "https://github.com/SafanAbbasi",
+                    "https://linkedin.com/in/safanabbasi",
+                  ],
+                  "knowsAbout": [
+                    "Full-Stack Development",
+                    "AI & LLM Systems",
+                    "Cloud Architecture",
+                    "Python",
+                    "C#",
+                    ".NET",
+                    "React",
+                    "TypeScript",
+                    "Azure",
+                    "AWS",
+                    "Docker",
+                    "Kubernetes",
+                  ],
+                  "hasCredential": [
+                    {
+                      "@type": "EducationalOccupationalCredential",
+                      "name": "AZ-104 Azure Administrator",
+                    },
+                    {
+                      "@type": "EducationalOccupationalCredential",
+                      "name": "AI-900 AI Fundamentals",
+                    },
+                    {
+                      "@type": "EducationalOccupationalCredential",
+                      "name": "AZ-900 Azure Fundamentals",
+                    },
+                    {
+                      "@type": "EducationalOccupationalCredential",
+                      "name": "AWS Cloud Practitioner",
+                    },
+                  ],
+                },
+              ],
+            }),
+          }}
+        />
       </body>
     </html>
   );

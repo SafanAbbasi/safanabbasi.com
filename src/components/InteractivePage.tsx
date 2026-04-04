@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useState, useRef, useEffect, type ReactNode } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import { SiOpenai, SiRust } from "react-icons/si";
 import { FaAws } from "react-icons/fa";
 import {
@@ -43,15 +43,34 @@ const floatingShapes = [
   { size: 10, x: "12%", y: "45%", duration: 7.5 },
 ];
 
+function ParallaxSection({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
+
+  return (
+    <div ref={ref}>
+      <motion.div style={{ y }}>
+        {children}
+      </motion.div>
+    </div>
+  );
+}
+
 export default function InteractivePage({ links }: { links: LinkItem[] }) {
   const shouldAnimate = useRef(!_hasPlayed).current;
   const [mousePos, setMousePos] = useState({ x: -500, y: -500 });
   const [showScrollHint, setShowScrollHint] = useState(true);
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
     _hasPlayed = true;
     const handleScroll = () => {
       setShowScrollHint(window.scrollY < window.innerHeight * 0.3);
+      setShowBackToTop(window.scrollY > window.innerHeight);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -225,14 +244,33 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
 
         {/* Portfolio sections */}
         <SectionDivider />
-        <AboutSection />
+        <ParallaxSection><AboutSection /></ParallaxSection>
         <SectionDivider />
-        <ProjectsGrid />
+        <ParallaxSection><ProjectsGrid /></ParallaxSection>
         <SectionDivider />
-        <SkillsSection />
+        <ParallaxSection><SkillsSection /></ParallaxSection>
         <SectionDivider />
-        <ContactSection />
+        <ParallaxSection><ContactSection /></ParallaxSection>
       </div>
+
+      {/* Back to top button */}
+      <AnimatePresence>
+        {showBackToTop && (
+          <motion.button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="fixed bottom-6 right-6 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-gray-200/50 bg-white/80 text-gray-600 shadow-lg backdrop-blur-sm transition-colors hover:border-teal-500/50 hover:text-teal-600 dark:border-white/10 dark:bg-white/10 dark:text-gray-400 dark:hover:border-teal-400/50 dark:hover:text-teal-400"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.2 }}
+            aria-label="Back to top"
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+            </svg>
+          </motion.button>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
