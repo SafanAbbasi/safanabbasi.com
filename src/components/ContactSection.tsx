@@ -2,8 +2,7 @@
 
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { FaGithub, FaLinkedinIn } from "react-icons/fa";
-import { HiOutlineMail } from "react-icons/hi";
+
 
 function SuccessOverlay({ onDone }: { onDone: () => void }) {
   const confettiPieces = Array.from({ length: 24 }, (_, i) => ({
@@ -90,23 +89,6 @@ function SuccessOverlay({ onDone }: { onDone: () => void }) {
   );
 }
 
-const socialLinks = [
-  {
-    icon: FaGithub,
-    href: "https://github.com/SafanAbbasi",
-    label: "GitHub",
-  },
-  {
-    icon: FaLinkedinIn,
-    href: "https://linkedin.com/in/safanabbasi",
-    label: "LinkedIn",
-  },
-  {
-    icon: HiOutlineMail,
-    href: "mailto:safan.a.abbasi@gmail.com",
-    label: "Email",
-  },
-];
 
 export default function ContactSection() {
   const [formState, setFormState] = useState({
@@ -244,30 +226,8 @@ export default function ContactSection() {
           )}
         </motion.form>
 
-        {/* Social links */}
-        <motion.div
-          className="flex items-center justify-center gap-4"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          {socialLinks.map((social) => (
-            <a
-              key={social.label}
-              href={social.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200/50 bg-white/50 text-gray-600 transition-colors hover:border-teal-500/50 hover:text-teal-600 dark:border-white/10 dark:bg-white/5 dark:text-gray-400 dark:hover:border-teal-400/50 dark:hover:text-teal-400"
-              aria-label={social.label}
-            >
-              <social.icon className="h-4 w-4" />
-            </a>
-          ))}
-        </motion.div>
-
         {/* Copyright */}
-        <p className="mt-12 text-center text-xs text-gray-500 dark:text-gray-400">
+        <p className="mt-10 text-center text-xs text-gray-500 dark:text-gray-400">
           &copy; {new Date().getFullYear()} Safan Abbasi
         </p>
       </div>
