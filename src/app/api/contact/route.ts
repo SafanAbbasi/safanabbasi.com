@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
+const RATE_LIMIT_MAX = 3;
+const RATE_LIMIT_WINDOW_MINUTES = 15;
+
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const { name, email, message, website, _t } = body;
@@ -31,10 +34,33 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    "unknown";
+
   const supabase = createServerSupabaseClient();
+
+  // Rate limiting: check recent submissions from this IP
+  const windowStart = new Date(
+    Date.now() - RATE_LIMIT_WINDOW_MINUTES * 60 * 1000
+  ).toISOString();
+
+  const { count } = await supabase
+    .from("messages")
+    .select("*", { count: "exact", head: true })
+    .eq("ip", ip)
+    .gte("created_at", windowStart);
+
+  if (count !== null && count >= RATE_LIMIT_MAX) {
+    return NextResponse.json(
+      { error: "Too many messages. Please try again later." },
+      { status: 429 }
+    );
+  }
+
   const { error } = await supabase
     .from("messages")
-    .insert({ name, email, message });
+    .insert({ name, email, message, ip });
 
   if (error) {
     return NextResponse.json(
