@@ -135,7 +135,7 @@ export default function ExperienceDrawer({
 
           {/* Drawer */}
           <motion.div
-            className="fixed inset-y-0 right-0 z-[70] w-full max-w-lg overflow-y-auto bg-white shadow-2xl dark:bg-gray-900 sm:max-w-xl"
+            className="fixed inset-y-0 right-0 z-[70] w-full overflow-y-auto bg-white shadow-2xl dark:bg-gray-900 sm:max-w-xl"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}

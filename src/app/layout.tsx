@@ -29,6 +29,12 @@ export const metadata: Metadata = {
       "Full-Stack Software Engineer & NASA Patent Co-Inventor. Building scalable solutions with AI, cloud architecture, and modern web technologies.",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Safan Abbasi — Software Engineer",
+    description:
+      "Full-Stack Software Engineer & NASA Patent Co-Inventor. Building scalable solutions with AI, cloud architecture, and modern web technologies.",
+  },
 };
 
 export default function RootLayout({

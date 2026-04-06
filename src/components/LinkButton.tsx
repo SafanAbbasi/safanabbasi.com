@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { FaGithub, FaLinkedinIn, FaRocket } from "react-icons/fa";
 import { HiOutlineGlobeAlt, HiOutlineDocumentText } from "react-icons/hi";
@@ -37,11 +37,9 @@ export default function LinkButton({ link }: { link: LinkItem }) {
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [particles, setParticles] = useState<Particle[]>([]);
 
-  useState(() => {
-    if (typeof window !== "undefined") {
-      setIsTouchDevice("ontouchstart" in window);
-    }
-  });
+  useEffect(() => {
+    setIsTouchDevice("ontouchstart" in window);
+  }, []);
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -81,12 +79,8 @@ export default function LinkButton({ link }: { link: LinkItem }) {
         rel="noopener noreferrer"
         onClick={(e) => {
           if (isTouchDevice && link.description) {
-            if (!isFlipped) {
-              e.preventDefault();
-              setIsFlipped(true);
-              setTimeout(() => setIsFlipped(false), 2000);
-              return;
-            }
+            setIsFlipped(true);
+            setTimeout(() => setIsFlipped(false), 2000);
           }
           handleClick(e);
         }}
