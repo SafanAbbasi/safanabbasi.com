@@ -55,7 +55,7 @@ export async function POST(
     from: process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev",
     to: message.email,
     subject: `Re: Your message on safanabbasi.com`,
-    replyTo: "safan.a.abbasi@gmail.com",
+    replyTo: process.env.RESEND_REPLY_TO || "safan.a.abbasi@gmail.com",
     text: `Hi ${message.name},\n\n${reply.trim()}\n\n—\nSafan Abbasi\nhttps://www.safanabbasi.com`,
   });
 

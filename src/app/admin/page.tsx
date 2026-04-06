@@ -93,6 +93,7 @@ export default function AdminPage() {
   const [replyingTo, setReplyingTo] = useState<number | null>(null);
   const [replyText, setReplyText] = useState("");
   const [replyStatus, setReplyStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const supabase = createBrowserSupabaseClient();
 
@@ -136,19 +137,27 @@ export default function AdminPage() {
     router.refresh();
   };
 
+  const showError = (msg: string) => {
+    setErrorMsg(msg);
+    setTimeout(() => setErrorMsg(null), 4000);
+  };
+
   const handleToggleActive = async (id: string, isActive: boolean) => {
-    await supabase.from("links").update({ is_active: !isActive }).eq("id", id);
+    const { error } = await supabase.from("links").update({ is_active: !isActive }).eq("id", id);
+    if (error) return showError("Failed to toggle link");
     fetchData();
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this link?")) return;
-    await supabase.from("links").delete().eq("id", id);
+    const { error } = await supabase.from("links").delete().eq("id", id);
+    if (error) return showError("Failed to delete link");
     fetchData();
   };
 
   const handleEdit = async (id: string, updates: Partial<LinkRow>) => {
-    await supabase.from("links").update(updates).eq("id", id);
+    const { error } = await supabase.from("links").update(updates).eq("id", id);
+    if (error) return showError("Failed to update link");
     fetchData();
   };
 
@@ -176,7 +185,7 @@ export default function AdminPage() {
     const id = newLabel.toLowerCase().replace(/\s+/g, "-");
     const maxOrder = links.reduce((max, l) => Math.max(max, l.sort_order), 0);
 
-    await supabase.from("links").insert({
+    const { error } = await supabase.from("links").insert({
       id,
       label: newLabel,
       url: newUrl,
@@ -186,6 +195,7 @@ export default function AdminPage() {
       sort_order: maxOrder + 1,
       is_active: true,
     });
+    if (error) return showError("Failed to add link");
 
     setNewLabel("");
     setNewUrl("");
@@ -199,10 +209,11 @@ export default function AdminPage() {
   const handleAddRedirect = async (e: React.FormEvent) => {
     e.preventDefault();
     const cleanSlug = newSlug.toLowerCase().replace(/[^a-z0-9-]/g, "");
-    await supabase.from("redirects").insert({
+    const { error } = await supabase.from("redirects").insert({
       slug: cleanSlug,
       destination_url: newDestination,
     });
+    if (error) return showError("Failed to add shortlink");
     setNewSlug("");
     setNewDestination("");
     setShowAddRedirect(false);
@@ -211,13 +222,15 @@ export default function AdminPage() {
 
   const handleDeleteRedirect = async (slug: string) => {
     if (!confirm(`Delete shortlink /${slug}?`)) return;
-    await supabase.from("redirects").delete().eq("slug", slug);
+    const { error } = await supabase.from("redirects").delete().eq("slug", slug);
+    if (error) return showError("Failed to delete shortlink");
     fetchData();
   };
 
   const handleDeleteMessage = async (id: number) => {
     if (!confirm("Delete this message?")) return;
-    await supabase.from("messages").delete().eq("id", id);
+    const { error } = await supabase.from("messages").delete().eq("id", id);
+    if (error) return showError("Failed to delete message");
     fetchData();
   };
 
@@ -324,6 +337,12 @@ export default function AdminPage() {
       </header>
 
       <div className="mx-auto max-w-5xl px-6 py-8">
+        {/* Error banner */}
+        {errorMsg && (
+          <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {errorMsg}
+          </div>
+        )}
         {/* Summary Cards */}
         <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 transition-shadow hover:shadow-md">
@@ -620,7 +639,7 @@ export default function AdminPage() {
                           </span>
                         )}
                       </div>
-                      <p className="mt-1 text-sm whitespace-pre-wrap text-gray-600">
+                      <p className="mt-1 max-h-32 overflow-y-auto text-sm whitespace-pre-wrap text-gray-600">
                         {msg.message}
                       </p>
                       <p className="mt-2 text-xs text-gray-400">
