@@ -27,6 +27,7 @@ import ProjectsGrid from "./ProjectsGrid";
 import SkillsSection from "./SkillsSection";
 import ContactSection from "./ContactSection";
 import SectionDivider from "./SectionDivider";
+import ExperienceDrawer from "./ExperienceDrawer";
 import ThemeToggle from "./ThemeToggle";
 import type { LinkItem } from "@/data/links";
 
@@ -65,6 +66,7 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
   const [mousePos, setMousePos] = useState({ x: -500, y: -500 });
   const [showScrollHint, setShowScrollHint] = useState(true);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [timelineOpen, setTimelineOpen] = useState(false);
 
   useEffect(() => {
     _hasPlayed = true;
@@ -244,7 +246,7 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
 
         {/* Portfolio sections */}
         <SectionDivider />
-        <ParallaxSection><AboutSection /></ParallaxSection>
+        <ParallaxSection><AboutSection onOpenTimeline={() => setTimelineOpen(true)} /></ParallaxSection>
         <SectionDivider />
         <ParallaxSection><ProjectsGrid /></ParallaxSection>
         <SectionDivider />
@@ -271,6 +273,8 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
           </motion.button>
         )}
       </AnimatePresence>
+
+      <ExperienceDrawer open={timelineOpen} onClose={() => setTimelineOpen(false)} />
     </main>
   );
 }

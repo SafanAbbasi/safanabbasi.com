@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "motion/react";
-import ExperienceDrawer from "./ExperienceDrawer";
+
 
 const stats = [
   { value: "5+", label: "Years Experience" },
@@ -17,8 +16,11 @@ const milestones = [
   { year: "2025", label: "AI & MCP", color: "bg-violet-500" },
 ];
 
-export default function AboutSection() {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+export default function AboutSection({
+  onOpenTimeline,
+}: {
+  onOpenTimeline: () => void;
+}) {
 
   return (
     <section id="about" className="py-20 md:py-28">
@@ -76,7 +78,7 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.5 }}
-          onClick={() => setDrawerOpen(true)}
+          onClick={onOpenTimeline}
         >
           <p className="mb-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
             Click to explore my journey
@@ -111,7 +113,6 @@ export default function AboutSection() {
         </motion.div>
       </div>
 
-      <ExperienceDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
     </section>
   );
 }
