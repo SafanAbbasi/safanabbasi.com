@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
-import { FaRocket, FaRobot, FaCode } from "react-icons/fa";
+import { FaRocket, FaRobot, FaCode, FaCalculator } from "react-icons/fa";
 
 const projects = [
   {
@@ -26,6 +26,15 @@ const projects = [
     color: "#0d9488",
     link: "https://patents.google.com/patent/US12174259B1/en?oq=12174259",
     linkLabel: "View Patent",
+  },
+  {
+    title: "Bookkeeping Automation",
+    year: "2025",
+    description:
+      "An AI-powered app that parses financial statements and produces detailed reports, reducing manual bookkeeping effort by 80+ hours per client. Optimized with multi-threading and batching for a 1000% speedup.",
+    tech: [],
+    icon: FaCalculator,
+    color: "#f59e0b",
   },
   {
     title: "Personal Portfolio",
@@ -136,7 +145,7 @@ export default function ProjectsGrid() {
           Projects
         </motion.h2>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2">
           {projects.map((project, i) => (
             <ProjectCard key={project.title} project={project} index={i} />
           ))}
