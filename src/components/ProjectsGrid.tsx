@@ -35,6 +35,8 @@ const projects = [
     tech: [],
     icon: FaCalculator,
     color: "#f59e0b",
+    link: "https://www.easebook.app/about",
+    linkLabel: "Learn More",
   },
   {
     title: "Personal Portfolio",
