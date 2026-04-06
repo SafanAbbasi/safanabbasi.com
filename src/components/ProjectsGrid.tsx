@@ -31,7 +31,7 @@ const projects = [
     title: "Personal Portfolio",
     year: "2025",
     description:
-      "This portfolio site — built from scratch with Next.js 16, featuring animated backgrounds, card flip interactions, click analytics, an admin dashboard, and a contact form with email replies.",
+      "You're looking at it. Built from scratch with custom animations, particle effects, and an interactive timeline — plus an admin dashboard with click analytics and email replies.",
     tech: ["Next.js", "React", "Supabase", "Motion", "Tailwind"],
     icon: FaCode,
     color: "#3b82f6",
