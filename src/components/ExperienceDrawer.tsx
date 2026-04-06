@@ -126,7 +126,7 @@ export default function ExperienceDrawer({
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm"
+            className="fixed inset-0 z-[70] bg-black/40 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -135,14 +135,14 @@ export default function ExperienceDrawer({
 
           {/* Drawer */}
           <motion.div
-            className="fixed inset-y-0 right-0 z-[70] w-full overflow-y-auto bg-white shadow-2xl dark:bg-gray-900 sm:max-w-xl"
+            className="fixed inset-y-0 right-0 z-[80] w-full overflow-y-auto bg-white shadow-2xl dark:bg-gray-900 sm:max-w-xl"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
             {/* Header */}
-            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200/50 bg-white/80 px-6 py-4 backdrop-blur-sm dark:border-white/10 dark:bg-gray-900/80">
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200/50 bg-white/80 px-6 py-4 pt-6 backdrop-blur-sm dark:border-white/10 dark:bg-gray-900/80">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">
                 Experience & Timeline
               </h2>
