@@ -9,7 +9,7 @@ const projects = [
     title: "AI Prompt Generation & MCP Server",
     year: "2025",
     description:
-      "Containerized codebase analysis platform generating deterministic prompt artifacts for LLM debugging and refactoring. Built an MCP-compliant server exposing schema-validated tools to Claude Desktop.",
+      "A CLI tool and MCP server for AI-powered code analysis. Point it at any codebase to generate structured prompts for debugging and refactoring — or give Claude Desktop direct access to inspect repos and git history.",
     tech: ["Python", "FastAPI", "Docker", "Gemini", "FastMCP"],
     icon: FaRobot,
     color: "#8b5cf6",
