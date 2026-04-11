@@ -64,9 +64,12 @@ Requires a `.env.local` with:
 ```
 NEXT_PUBLIC_SUPABASE_URL=your-url
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-key
+SUPABASE_SECRET_KEY=your-secret-key
 RESEND_API_KEY=your-resend-key
 RESEND_FROM_EMAIL=Your Name <email@yourdomain.com>
 ```
+
+Apply the schema in `supabase/migrations/001_initial_schema.sql` before using the admin dashboard or contact form.
 
 ## Project Structure
 

@@ -17,7 +17,6 @@ import {
   SiOpenai,
   SiJavascript,
   SiHtml5,
-  SiCss,
   SiRedis,
   SiFastapi,
   SiAnsible,

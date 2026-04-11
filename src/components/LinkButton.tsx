@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { FaGithub, FaLinkedinIn, FaRocket } from "react-icons/fa";
 import { HiOutlineGlobeAlt, HiOutlineDocumentText } from "react-icons/hi";
@@ -34,12 +34,7 @@ const particleColors = [
 export default function LinkButton({ link }: { link: LinkItem }) {
   const Icon = link.icon ? iconMap[link.icon] : null;
   const [isFlipped, setIsFlipped] = useState(false);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [particles, setParticles] = useState<Particle[]>([]);
-
-  useEffect(() => {
-    setIsTouchDevice("ontouchstart" in window);
-  }, []);
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -78,14 +73,17 @@ export default function LinkButton({ link }: { link: LinkItem }) {
         target="_blank"
         rel="noopener noreferrer"
         onClick={(e) => {
+          const isTouchDevice =
+            typeof window !== "undefined" &&
+            window.matchMedia("(hover: none), (pointer: coarse)").matches;
           if (isTouchDevice && link.description) {
             setIsFlipped(true);
             setTimeout(() => setIsFlipped(false), 2000);
           }
           handleClick(e);
         }}
-        onMouseEnter={() => !isTouchDevice && setIsFlipped(true)}
-        onMouseLeave={() => !isTouchDevice && setIsFlipped(false)}
+        onMouseEnter={() => setIsFlipped(true)}
+        onMouseLeave={() => setIsFlipped(false)}
         className="block"
         style={{ perspective: 800 }}
       >

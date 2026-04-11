@@ -4,17 +4,7 @@ import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical, Trash2, Pencil, Check, X, MousePointerClick } from "lucide-react";
-
-interface LinkRow {
-  id: string;
-  label: string;
-  url: string;
-  bg_color: string;
-  hover_color: string;
-  icon: string | null;
-  is_active: boolean;
-  sort_order: number;
-}
+import type { LinkRow } from "@/lib/admin/types";
 
 interface Props {
   link: LinkRow;

@@ -10,6 +10,24 @@ export function createServerSupabaseClient() {
   );
 }
 
+// Server-only client for privileged operations like contact rate limiting.
+export function createServiceSupabaseClient() {
+  if (!process.env.SUPABASE_SECRET_KEY) {
+    return null;
+  }
+
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SECRET_KEY,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    }
+  );
+}
+
 // Cookie-based server client (with auth context) — for protected operations
 export async function createAuthSupabaseClient() {
   const cookieStore = await cookies();

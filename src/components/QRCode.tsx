@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import QRCodeLib from "qrcode";
 import { Download } from "lucide-react";
@@ -24,7 +25,14 @@ export default function QRCode({ url }: { url: string }) {
         Scan to open your link page
       </p>
       <div className="flex flex-col items-center gap-4">
-        <img src={qrDataUrl} alt="QR Code" className="rounded-lg" />
+        <Image
+          src={qrDataUrl}
+          alt="QR Code"
+          width={200}
+          height={200}
+          className="rounded-lg"
+          unoptimized
+        />
         <a
           href={qrDataUrl}
           download="linkpage-qr.png"

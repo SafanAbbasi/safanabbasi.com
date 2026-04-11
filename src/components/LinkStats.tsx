@@ -9,12 +9,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
-
-interface LinkRow {
-  id: string;
-  label: string;
-  bg_color: string;
-}
+import type { LinkRow } from "@/lib/admin/types";
 
 interface Props {
   clicksPerLink: { link_id: string; count: number }[];

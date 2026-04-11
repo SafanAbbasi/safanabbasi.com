@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createServiceSupabaseClient } from "@/lib/supabase/server";
 
 const RATE_LIMIT_MAX = 3;
 const RATE_LIMIT_WINDOW_MINUTES = 15;
@@ -47,7 +47,14 @@ export async function POST(request: NextRequest) {
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     "unknown";
 
-  const supabase = createServerSupabaseClient();
+  const supabase = createServiceSupabaseClient();
+
+  if (!supabase) {
+    return NextResponse.json(
+      { error: "Server misconfigured: missing SUPABASE_SECRET_KEY" },
+      { status: 500 }
+    );
+  }
 
   // Rate limiting: check recent submissions from this IP
   const windowStart = new Date(

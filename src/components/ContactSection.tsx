@@ -1,20 +1,19 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
+const confettiPieces = Array.from({ length: 24 }, (_, i) => ({
+  id: i,
+  x: (Math.random() - 0.5) * 300,
+  y: -(Math.random() * 200 + 50),
+  rotate: Math.random() * 720 - 360,
+  scale: Math.random() * 0.5 + 0.5,
+  color: ["#14b8a6", "#8b5cf6", "#f59e0b", "#ec4899", "#3b82f6"][i % 5],
+  delay: Math.random() * 0.3,
+}));
 
 function SuccessOverlay({ onDone }: { onDone: () => void }) {
-  const confettiPieces = Array.from({ length: 24 }, (_, i) => ({
-    id: i,
-    x: (Math.random() - 0.5) * 300,
-    y: -(Math.random() * 200 + 50),
-    rotate: Math.random() * 720 - 360,
-    scale: Math.random() * 0.5 + 0.5,
-    color: ["#14b8a6", "#8b5cf6", "#f59e0b", "#ec4899", "#3b82f6"][i % 5],
-    delay: Math.random() * 0.3,
-  }));
-
   return (
     <motion.div
       className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-xl bg-white/90 backdrop-blur-sm dark:bg-gray-900/90"
@@ -100,7 +99,11 @@ export default function ContactSection() {
   const [status, setStatus] = useState<
     "idle" | "sending" | "sent" | "error"
   >("idle");
-  const loadTime = useRef(Date.now());
+  const loadTime = useRef(0);
+
+  useEffect(() => {
+    loadTime.current = Date.now();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -114,7 +117,7 @@ export default function ContactSection() {
           email: formState.email,
           message: formState.message,
           website: formState.website,
-          _t: loadTime.current,
+          _t: loadTime.current || Date.now(),
         }),
       });
       if (res.ok) {

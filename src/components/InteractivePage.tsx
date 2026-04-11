@@ -62,7 +62,7 @@ function ParallaxSection({ children }: { children: ReactNode }) {
 }
 
 export default function InteractivePage({ links }: { links: LinkItem[] }) {
-  const shouldAnimate = useRef(!_hasPlayed).current;
+  const [shouldAnimate] = useState(() => !_hasPlayed);
   const [mousePos, setMousePos] = useState({ x: -500, y: -500 });
   const [showScrollHint, setShowScrollHint] = useState(true);
   const [showBackToTop, setShowBackToTop] = useState(false);
