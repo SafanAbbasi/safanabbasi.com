@@ -1,34 +1,39 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createServiceSupabaseClient } from "@/lib/supabase/server";
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
-  const supabase = createServerSupabaseClient();
+  const supabase = createServiceSupabaseClient();
 
-  const { data: redirect } = await supabase
+  if (!supabase) {
+    return new NextResponse("Short links unavailable: missing SUPABASE_SECRET_KEY", {
+      status: 503,
+    });
+  }
+
+  const { data: redirect, error } = await supabase
     .from("redirects")
     .select("destination_url")
     .eq("slug", slug)
-    .single();
+    .maybeSingle();
 
-  if (!redirect) {
-    return NextResponse.redirect(new URL("/", request.url));
+  if (error || !redirect) {
+    return new NextResponse("Not found", { status: 404 });
   }
 
-  // Track the click
-  supabase
-    .from("clicks")
-    .insert({
-      link_id: `redirect:${slug}`,
-      referrer: request.headers.get("referer") || null,
-      user_agent: request.headers.get("user-agent") || null,
-    })
-    .then(() => {});
+  const { error: insertError } = await supabase.from("clicks").insert({
+    link_id: `redirect:${slug}`,
+    referrer: request.headers.get("referer") || null,
+    user_agent: request.headers.get("user-agent") || null,
+  });
 
-  // Handle relative URLs (like /resume.pdf)
+  if (insertError) {
+    console.error("[slug] click insert:", insertError.message);
+  }
+
   const destination = redirect.destination_url.startsWith("/")
     ? new URL(redirect.destination_url, request.url).toString()
     : redirect.destination_url;

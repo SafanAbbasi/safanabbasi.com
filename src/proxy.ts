@@ -29,7 +29,6 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Protect /admin routes — redirect to login if not authenticated
   if (
     request.nextUrl.pathname.startsWith("/admin") &&
     !request.nextUrl.pathname.startsWith("/admin/login")
@@ -39,7 +38,6 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  // Redirect away from login if already authenticated
   if (request.nextUrl.pathname === "/admin/login" && user) {
     return NextResponse.redirect(new URL("/admin", request.url));
   }

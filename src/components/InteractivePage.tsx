@@ -1,7 +1,13 @@
 "use client";
 
 import { useState, useRef, useEffect, type ReactNode } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
+import {
+  motion,
+  AnimatePresence,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "motion/react";
 import { SiOpenai, SiRust } from "react-icons/si";
 import { FaAws } from "react-icons/fa";
 import {
@@ -44,13 +50,23 @@ const floatingShapes = [
   { size: 10, x: "12%", y: "45%", duration: 7.5 },
 ];
 
-function ParallaxSection({ children }: { children: ReactNode }) {
+function ParallaxSection({
+  children,
+  reduceMotion,
+}: {
+  children: ReactNode;
+  reduceMotion: boolean;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    reduceMotion ? [0, 0] : [40, -40]
+  );
 
   return (
     <div ref={ref}>
@@ -62,6 +78,7 @@ function ParallaxSection({ children }: { children: ReactNode }) {
 }
 
 export default function InteractivePage({ links }: { links: LinkItem[] }) {
+  const reduceMotion = useReducedMotion() ?? false;
   const [shouldAnimate] = useState(() => !_hasPlayed);
   const [mousePos, setMousePos] = useState({ x: -500, y: -500 });
   const [showScrollHint, setShowScrollHint] = useState(true);
@@ -95,37 +112,69 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
         {/* Gradient mesh blobs */}
         <motion.div
           className="absolute top-[5%] left-[5%] h-96 w-96 rounded-full bg-teal-200 opacity-40 blur-[140px] dark:bg-purple-600 dark:opacity-30"
-          animate={{
-            x: [0, 100, -50, 0],
-            y: [0, -80, 50, 0],
-            scale: [1, 1.2, 0.9, 1],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          animate={
+            reduceMotion
+              ? { x: 0, y: 0, scale: 1 }
+              : {
+                  x: [0, 100, -50, 0],
+                  y: [0, -80, 50, 0],
+                  scale: [1, 1.2, 0.9, 1],
+                }
+          }
+          transition={
+            reduceMotion
+              ? { duration: 0 }
+              : { duration: 10, repeat: Infinity, ease: "easeInOut" }
+          }
         />
         <motion.div
           className="absolute top-[45%] right-[0%] h-[28rem] w-[28rem] rounded-full bg-purple-200 opacity-35 blur-[140px] dark:bg-teal-500 dark:opacity-25"
-          animate={{
-            x: [0, -90, 40, 0],
-            y: [0, 60, -40, 0],
-            scale: [1, 0.85, 1.1, 1],
-          }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          animate={
+            reduceMotion
+              ? { x: 0, y: 0, scale: 1 }
+              : {
+                  x: [0, -90, 40, 0],
+                  y: [0, 60, -40, 0],
+                  scale: [1, 0.85, 1.1, 1],
+                }
+          }
+          transition={
+            reduceMotion
+              ? { duration: 0 }
+              : { duration: 12, repeat: Infinity, ease: "easeInOut" }
+          }
         />
         <motion.div
           className="absolute bottom-[10%] left-[30%] h-80 w-80 rounded-full bg-pink-200 opacity-30 blur-[140px] dark:bg-pink-500 dark:opacity-20"
-          animate={{
-            x: [0, 70, -60, 0],
-            y: [0, -40, 70, 0],
-          }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          animate={
+            reduceMotion
+              ? { x: 0, y: 0 }
+              : {
+                  x: [0, 70, -60, 0],
+                  y: [0, -40, 70, 0],
+                }
+          }
+          transition={
+            reduceMotion
+              ? { duration: 0 }
+              : { duration: 14, repeat: Infinity, ease: "easeInOut" }
+          }
         />
         <motion.div
           className="absolute top-[25%] left-[50%] h-72 w-72 rounded-full bg-blue-200 opacity-25 blur-[140px] dark:bg-blue-500 dark:opacity-15"
-          animate={{
-            x: [0, -50, 60, 0],
-            y: [0, 70, -30, 0],
-          }}
-          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+          animate={
+            reduceMotion
+              ? { x: 0, y: 0 }
+              : {
+                  x: [0, -50, 60, 0],
+                  y: [0, 70, -30, 0],
+                }
+          }
+          transition={
+            reduceMotion
+              ? { duration: 0 }
+              : { duration: 16, repeat: Infinity, ease: "easeInOut" }
+          }
         />
 
         {/* Floating decorative elements */}
@@ -139,16 +188,24 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
               left: shape.x,
               top: shape.y,
             }}
-            animate={{
-              y: [0, -25, 8, -15, 0],
-              x: [0, 12, -8, 15, 0],
-              opacity: [0.2, 0.5, 0.15, 0.4, 0.2],
-            }}
-            transition={{
-              duration: shape.duration,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
+            animate={
+              reduceMotion
+                ? { y: 0, x: 0, opacity: 0.25 }
+                : {
+                    y: [0, -25, 8, -15, 0],
+                    x: [0, 12, -8, 15, 0],
+                    opacity: [0.2, 0.5, 0.15, 0.4, 0.2],
+                  }
+            }
+            transition={
+              reduceMotion
+                ? { duration: 0 }
+                : {
+                    duration: shape.duration,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }
+            }
           />
         ))}
 
@@ -195,13 +252,21 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
               key={i}
               className="absolute hidden flex-col items-center gap-1 lg:flex"
               style={{ left: x, top: y, ...(color ? { color } : {}) }}
-              animate={{ y: [0, -12, 0], opacity: [0.4, 0.6, 0.4] }}
-              transition={{
-                duration,
-                delay,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+              animate={
+                reduceMotion
+                  ? { y: 0, opacity: 0.5 }
+                  : { y: [0, -12, 0], opacity: [0.4, 0.6, 0.4] }
+              }
+              transition={
+                reduceMotion
+                  ? { duration: 0 }
+                  : {
+                      duration,
+                      delay,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }
+              }
             >
               <Icon className="h-10 w-10" size={40} />
               <span className="text-[10px] font-medium">{label}</span>
@@ -210,8 +275,11 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
 
           {/* Wider centered layout with 2-col links */}
           <div className="w-full max-w-3xl">
-            <ProfileHeader shouldAnimate={shouldAnimate} />
-            <AnimatedLinks links={links} shouldAnimate={shouldAnimate} />
+            <ProfileHeader shouldAnimate={shouldAnimate && !reduceMotion} />
+            <AnimatedLinks
+              links={links}
+              shouldAnimate={shouldAnimate && !reduceMotion}
+            />
           </div>
 
           {/* Scroll indicator — clickable, hides on scroll */}
@@ -234,8 +302,12 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
               viewBox="0 0 24 24"
               stroke="currentColor"
               strokeWidth={2}
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              animate={reduceMotion ? { y: 0 } : { y: [0, 6, 0] }}
+              transition={
+                reduceMotion
+                  ? { duration: 0 }
+                  : { duration: 1.5, repeat: Infinity, ease: "easeInOut" }
+              }
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
             </motion.svg>
@@ -246,13 +318,21 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
 
         {/* Portfolio sections */}
         <SectionDivider />
-        <ParallaxSection><AboutSection onOpenTimeline={() => setTimelineOpen(true)} /></ParallaxSection>
+        <ParallaxSection reduceMotion={reduceMotion}>
+          <AboutSection onOpenTimeline={() => setTimelineOpen(true)} />
+        </ParallaxSection>
         <SectionDivider />
-        <ParallaxSection><ProjectsGrid /></ParallaxSection>
+        <ParallaxSection reduceMotion={reduceMotion}>
+          <ProjectsGrid />
+        </ParallaxSection>
         <SectionDivider />
-        <ParallaxSection><SkillsSection /></ParallaxSection>
+        <ParallaxSection reduceMotion={reduceMotion}>
+          <SkillsSection />
+        </ParallaxSection>
         <SectionDivider />
-        <ParallaxSection><ContactSection /></ParallaxSection>
+        <ParallaxSection reduceMotion={reduceMotion}>
+          <ContactSection />
+        </ParallaxSection>
       </div>
 
       {/* Back to top button */}

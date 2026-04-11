@@ -46,7 +46,7 @@ A full-stack portfolio website with interactive animations, click analytics, ema
 - Click tracking API (fire-and-forget, non-blocking)
 - Short link redirects with click tracking
 - Dynamic OG image and favicon generation (Edge runtime)
-- Proxy-based auth middleware (Next.js 16 pattern)
+- Request `proxy` protects `/admin` (Supabase session cookies; Next.js 16 `src/proxy.ts`)
 - IP-based rate limiting on contact form (3 per 15 min via Supabase)
 - JSON-LD structured data (Person + WebSite schemas)
 - Sitemap and robots.txt for SEO
@@ -57,6 +57,7 @@ A full-stack portfolio website with interactive animations, click analytics, ema
 ```bash
 npm install
 npm run dev
+npm run typecheck
 npm test
 ```
 
@@ -70,7 +71,9 @@ RESEND_API_KEY=your-resend-key
 RESEND_FROM_EMAIL=Your Name <email@yourdomain.com>
 ```
 
-Apply the schema in `supabase/migrations/001_initial_schema.sql` before using the admin dashboard or contact form.
+`SUPABASE_SECRET_KEY` is required on the server for contact rate limiting, short-link resolution (`/{slug}`), and validating `redirect:*` click targets. Vercel must include it for production.
+
+Apply `supabase/migrations/001_initial_schema.sql`, then `002_redirects_private_read.sql`, before relying on short links or the tightened redirect privacy model.
 
 ## Project Structure
 
@@ -110,7 +113,7 @@ src/
 │   └── links.ts                 # Link types and profile data
 ├── lib/
 │   └── supabase/                # Server + browser Supabase clients
-└── proxy.ts                     # Auth middleware (Next.js 16)
+└── proxy.ts                     # Supabase auth for /admin (Next.js 16 proxy)
 ```
 
 ## Deployment
