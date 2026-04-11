@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Check, MessageSquare, Reply, Send, Trash2 } from "lucide-react";
 import type { MessageRow } from "@/lib/admin/types";
+import { site } from "@/lib/site";
 
 type ReplyStatus = "idle" | "sending" | "sent" | "error";
 
@@ -144,7 +145,7 @@ export default function MessagesSection({
                     disabled={replyStatus === "sending" || replyStatus === "sent"}
                   />
                   <div className="mt-2 flex items-center justify-between">
-                    <p className="text-xs text-gray-400">From: contact@safanabbasi.com</p>
+                    <p className="text-xs text-gray-400">From: {site.contactEmail}</p>
                     <div className="flex items-center gap-2">
                       {replyStatus === "error" && (
                         <p className="text-xs text-red-500">Failed to send. Try again.</p>

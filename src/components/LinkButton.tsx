@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { FaGithub, FaLinkedinIn, FaRocket } from "react-icons/fa";
 import { HiOutlineGlobeAlt, HiOutlineDocumentText } from "react-icons/hi";
 import type { LinkItem } from "@/data/links";
+import { isKnownLinkIconKey } from "@/lib/link-icons";
 
 const iconMap: Record<string, React.FC<{ className?: string }>> = {
   Code: FaGithub,
@@ -32,7 +33,8 @@ const particleColors = [
 ];
 
 export default function LinkButton({ link }: { link: LinkItem }) {
-  const Icon = link.icon ? iconMap[link.icon] : null;
+  const Icon =
+    link.icon && isKnownLinkIconKey(link.icon) ? iconMap[link.icon] : null;
   const [isFlipped, setIsFlipped] = useState(false);
   const [particles, setParticles] = useState<Particle[]>([]);
 

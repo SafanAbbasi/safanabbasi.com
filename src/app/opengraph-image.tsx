@@ -1,7 +1,8 @@
 import { ImageResponse } from "next/og";
+import { site } from "@/lib/site";
 
 export const runtime = "edge";
-export const alt = "Safan Abbasi — Software Engineer";
+export const alt = site.pageTitle;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -55,7 +56,7 @@ export default function OGImage() {
               marginTop: 24,
             }}
           >
-            Safan Abbasi
+            {site.personName}
           </div>
           <div
             style={{
@@ -64,7 +65,7 @@ export default function OGImage() {
               marginTop: 8,
             }}
           >
-            Software Engineer &amp; NASA Patent Co-Inventor
+            {site.ogSubtitle}
           </div>
           <div
             style={{
@@ -75,7 +76,7 @@ export default function OGImage() {
               color: "#9ca3af",
             }}
           >
-            Full-Stack Engineering &bull; AI &amp; LLM Systems &bull; Cloud Architecture
+            {site.ogSkillsLine}
           </div>
         </div>
       </div>

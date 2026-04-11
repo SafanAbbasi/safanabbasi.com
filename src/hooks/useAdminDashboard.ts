@@ -19,6 +19,7 @@ import type {
   RedirectFormValues,
   RedirectRow,
 } from "@/lib/admin/types";
+import { site } from "@/lib/site";
 
 type DashboardData = {
   analytics: AnalyticsData | null;
@@ -311,7 +312,7 @@ export function useAdminDashboard() {
   }, [analytics, links]);
 
   const siteUrl =
-    typeof window !== "undefined" ? window.location.origin : "https://www.safanabbasi.com";
+    typeof window !== "undefined" ? window.location.origin : site.canonicalUrl;
 
   return {
     analytics,

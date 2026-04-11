@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
+import { aggregateAnalyticsFromClicks } from "@/lib/analytics-aggregate";
+import type { ClickRow } from "@/lib/analytics-aggregate";
 import { createAuthSupabaseClient } from "@/lib/supabase/server";
-
-type ClickRow = {
-  link_id: string;
-  clicked_at: string;
-};
 
 type SummaryRow = {
   total_clicks: number | string;
@@ -64,45 +61,7 @@ async function getAnalyticsViaFallback(
     .select("link_id, clicked_at");
 
   const clicks = (allClicks || []) as ClickRow[];
-
-  const clickCounts: Record<string, number> = {};
-  clicks.forEach((row) => {
-    clickCounts[row.link_id] = (clickCounts[row.link_id] || 0) + 1;
-  });
-
-  const clicksPerLink = Object.entries(clickCounts).map(([link_id, count]) => ({
-    link_id,
-    count,
-  }));
-
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-  const recentClicks = clicks.filter(
-    (row) => new Date(row.clicked_at) >= thirtyDaysAgo
-  );
-
-  const clicksPerDay: Record<string, number> = {};
-  recentClicks.forEach((row) => {
-    const day = new Date(row.clicked_at).toISOString().split("T")[0];
-    clicksPerDay[day] = (clicksPerDay[day] || 0) + 1;
-  });
-
-  const dailyClicks = Object.entries(clicksPerDay)
-    .map(([date, count]) => ({ date, count }))
-    .sort((a, b) => a.date.localeCompare(b.date));
-
-  const oneWeekAgo = new Date();
-  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-
-  return {
-    clicksPerLink,
-    dailyClicks,
-    totalClicks: clicks.length,
-    weeklyClicks: recentClicks.filter(
-      (row) => new Date(row.clicked_at) >= oneWeekAgo
-    ).length,
-  };
+  return aggregateAnalyticsFromClicks(clicks);
 }
 
 export async function GET() {

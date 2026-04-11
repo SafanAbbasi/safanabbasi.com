@@ -1,3 +1,9 @@
+/**
+ * Shared types and profile content for the public page.
+ * Link rows are loaded from Supabase (`links` table); the static list below was removed to avoid drift.
+ */
+import { site } from "@/lib/site";
+
 export interface LinkItem {
   id: string;
   label: string;
@@ -8,43 +14,8 @@ export interface LinkItem {
   description?: string;
 }
 
-export const links: LinkItem[] = [
-  {
-    id: "github",
-    label: "GitHub",
-    url: "https://github.com/SafanAbbasi",
-    bgColor: "#2C2C2A",
-    hoverColor: "#444441",
-    icon: "Code",
-  },
-  {
-    id: "linkedin",
-    label: "LinkedIn",
-    url: "https://linkedin.com/in/safanabbasi",
-    bgColor: "#185FA5",
-    hoverColor: "#0C447C",
-    icon: "Briefcase",
-  },
-  {
-    id: "portfolio",
-    label: "Portfolio",
-    url: "https://safanabbasi.github.io",
-    bgColor: "#534AB7",
-    hoverColor: "#3C3489",
-    icon: "Globe",
-  },
-  {
-    id: "resume",
-    label: "Resume / CV",
-    url: "/resume.pdf",
-    bgColor: "#0F6E56",
-    hoverColor: "#085041",
-    icon: "FileText",
-  },
-];
-
 export const profile = {
-  name: "Safan Abbasi",
+  name: site.personName,
   greeting: "Hey, I'm Safan!",
   title: "Software Engineer & NASA Patent Co-Inventor",
   skills: ["Full-Stack Engineering", "AI & LLM Systems", "Cloud Architecture"],

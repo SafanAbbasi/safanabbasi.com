@@ -57,6 +57,7 @@ A full-stack portfolio website with interactive animations, click analytics, ema
 ```bash
 npm install
 npm run dev
+npm test
 ```
 
 Requires a `.env.local` with:

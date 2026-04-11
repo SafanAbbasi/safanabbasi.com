@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
+import { clicksRowToCsvLine } from "@/lib/csv";
 import { createAuthSupabaseClient } from "@/lib/supabase/server";
+
+const PAGE_SIZE = 2000;
 
 export async function GET() {
   const supabase = await createAuthSupabaseClient();
@@ -12,27 +15,41 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { data: clicks } = await supabase
-    .from("clicks")
-    .select("link_id, clicked_at, referrer, user_agent")
-    .order("clicked_at", { ascending: false });
+  const header = "link_id,clicked_at,referrer,user_agent";
+  const lines: string[] = [header];
+  let offset = 0;
 
-  if (!clicks || clicks.length === 0) {
+  while (true) {
+    const { data: batch, error } = await supabase
+      .from("clicks")
+      .select("link_id, clicked_at, referrer, user_agent")
+      .order("clicked_at", { ascending: false })
+      .range(offset, offset + PAGE_SIZE - 1);
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    if (!batch?.length) {
+      break;
+    }
+
+    for (const row of batch) {
+      lines.push(clicksRowToCsvLine(row));
+    }
+
+    if (batch.length < PAGE_SIZE) {
+      break;
+    }
+
+    offset += PAGE_SIZE;
+  }
+
+  if (lines.length <= 1) {
     return new NextResponse("No data to export", { status: 404 });
   }
 
-  const header = "link_id,clicked_at,referrer,user_agent";
-  const rows = clicks.map((row) => {
-    const escape = (val: string | null) => {
-      if (!val) return "";
-      // Escape quotes and wrap in quotes if contains comma
-      const escaped = val.replace(/"/g, '""');
-      return escaped.includes(",") ? `"${escaped}"` : escaped;
-    };
-    return `${row.link_id},${row.clicked_at},${escape(row.referrer)},${escape(row.user_agent)}`;
-  });
-
-  const csv = [header, ...rows].join("\n");
+  const csv = lines.join("\n");
 
   return new NextResponse(csv, {
     headers: {

@@ -9,6 +9,7 @@ import {
 import { Plus } from "lucide-react";
 import SortableLinkItem from "@/components/SortableLinkItem";
 import type { LinkFormValues, LinkRow } from "@/lib/admin/types";
+import { KNOWN_LINK_ICON_KEYS } from "@/lib/link-icons";
 
 interface Props {
   links: LinkRow[];
@@ -118,7 +119,7 @@ export default function LinksManagerSection({
               </div>
               <input
                 type="text"
-                placeholder="Icon name (optional)"
+                placeholder={`Icon (${KNOWN_LINK_ICON_KEYS.join(", ")}) optional`}
                 value={form.icon}
                 onChange={(e) => setForm((current) => ({ ...current, icon: e.target.value }))}
                 className="flex-1 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 shadow-sm focus:border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-100"

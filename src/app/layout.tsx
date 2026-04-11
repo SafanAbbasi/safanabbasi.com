@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Providers from "@/components/Providers";
+import { site } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -16,24 +17,21 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.safanabbasi.com"),
-  title: "Safan Abbasi — Software Engineer",
-  description:
-    "Full-Stack Software Engineer & NASA Patent Co-Inventor. Building scalable solutions with AI, cloud architecture, and modern web technologies.",
+  metadataBase: new URL(site.canonicalUrl),
+  title: site.pageTitle,
+  description: site.description,
   verification: {
-    google: "C7rvR625RScm8kL9IxcgsZLKLz3Jb-icDZsZRFnb2zw",
+    google: site.googleSiteVerification,
   },
   openGraph: {
-    title: "Safan Abbasi — Software Engineer",
-    description:
-      "Full-Stack Software Engineer & NASA Patent Co-Inventor. Building scalable solutions with AI, cloud architecture, and modern web technologies.",
+    title: site.pageTitle,
+    description: site.description,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Safan Abbasi — Software Engineer",
-    description:
-      "Full-Stack Software Engineer & NASA Patent Co-Inventor. Building scalable solutions with AI, cloud architecture, and modern web technologies.",
+    title: site.pageTitle,
+    description: site.description,
   },
 };
 
@@ -62,52 +60,21 @@ export default function RootLayout({
               "@graph": [
                 {
                   "@type": "WebSite",
-                  "name": "Safan Abbasi",
-                  "url": "https://www.safanabbasi.com",
+                  "name": site.personName,
+                  "url": site.canonicalUrl,
                 },
                 {
                   "@type": "Person",
-                  "name": "Safan Abbasi",
-                  "url": "https://www.safanabbasi.com",
-                  "jobTitle": "Software Engineer",
-                  "description":
-                    "Full-Stack Software Engineer & NASA Patent Co-Inventor. Building scalable solutions with AI, cloud architecture, and modern web technologies.",
-                  "sameAs": [
-                    "https://github.com/SafanAbbasi",
-                    "https://linkedin.com/in/safanabbasi",
-                  ],
-                  "knowsAbout": [
-                    "Full-Stack Development",
-                    "AI & LLM Systems",
-                    "Cloud Architecture",
-                    "Python",
-                    "C#",
-                    ".NET",
-                    "React",
-                    "TypeScript",
-                    "Azure",
-                    "AWS",
-                    "Docker",
-                    "Kubernetes",
-                  ],
-                  "hasCredential": [
-                    {
-                      "@type": "EducationalOccupationalCredential",
-                      "name": "AZ-104 Azure Administrator",
-                    },
-                    {
-                      "@type": "EducationalOccupationalCredential",
-                      "name": "AI-900 AI Fundamentals",
-                    },
-                    {
-                      "@type": "EducationalOccupationalCredential",
-                      "name": "AZ-900 Azure Fundamentals",
-                    },
-                    {
-                      "@type": "EducationalOccupationalCredential",
-                      "name": "AWS Cloud Practitioner",
-                    },
-                  ],
+                  "name": site.personName,
+                  "url": site.canonicalUrl,
+                  "jobTitle": site.jobTitle,
+                  "description": site.description,
+                  "sameAs": [...site.sameAs],
+                  "knowsAbout": [...site.knowsAbout],
+                  "hasCredential": site.credentials.map((name) => ({
+                    "@type": "EducationalOccupationalCredential",
+                    name,
+                  })),
                 },
               ],
             }),

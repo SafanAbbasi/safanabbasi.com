@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { MousePointerClick, Plus, Trash2 } from "lucide-react";
 import type { RedirectFormValues, RedirectRow } from "@/lib/admin/types";
+import { site } from "@/lib/site";
 
 interface Props {
   redirects: RedirectRow[];
@@ -61,7 +62,7 @@ export default function ShortLinksSection({
             <div className="flex-1">
               <label className="mb-1 block text-xs font-medium text-gray-500">Slug</label>
               <div className="flex items-center gap-1">
-                <span className="text-sm text-gray-400">safanabbasi.com/</span>
+                <span className="text-sm text-gray-400">{site.displayHost}/</span>
                 <input
                   type="text"
                   value={form.slug}

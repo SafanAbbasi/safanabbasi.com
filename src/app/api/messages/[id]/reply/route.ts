@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { Resend } from "resend";
 import { createAuthSupabaseClient } from "@/lib/supabase/server";
+import { site } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -54,9 +55,9 @@ export async function POST(
   const { error: emailError } = await resend.emails.send({
     from: process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev",
     to: message.email,
-    subject: `Re: Your message on safanabbasi.com`,
+    subject: `Re: Your message on ${site.displayHost}`,
     replyTo: process.env.RESEND_REPLY_TO || "safan.a.abbasi@gmail.com",
-    text: `Hi ${message.name},\n\n${reply.trim()}\n\n—\nSafan Abbasi\nhttps://www.safanabbasi.com`,
+    text: `Hi ${message.name},\n\n${reply.trim()}\n\n—\n${site.personName}\n${site.canonicalUrl}`,
   });
 
   if (emailError) {
