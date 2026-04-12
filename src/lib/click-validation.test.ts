@@ -33,4 +33,12 @@ describe("isValidLinkIdShape", () => {
     expect(isValidLinkIdShape(1)).toBe(false);
     expect(isValidLinkIdShape("")).toBe(false);
   });
+
+  it("accepts string at max length (512)", () => {
+    expect(isValidLinkIdShape("a".repeat(512))).toBe(true);
+  });
+
+  it("rejects string over max length", () => {
+    expect(isValidLinkIdShape("a".repeat(513))).toBe(false);
+  });
 });
