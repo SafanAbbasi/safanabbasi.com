@@ -73,7 +73,22 @@ RESEND_FROM_EMAIL=Your Name <email@yourdomain.com>
 
 `SUPABASE_SECRET_KEY` is required on the server for contact rate limiting, short-link resolution (`/{slug}`), and validating `redirect:*` click targets. Vercel must include it for production.
 
-Apply `supabase/migrations/001_initial_schema.sql`, then `002_redirects_private_read.sql`, before relying on short links or the tightened redirect privacy model.
+### Database Migrations
+
+The Supabase CLI is used to apply migrations. One-time setup:
+
+```bash
+npx supabase login
+npx supabase link --project-ref <your-project-ref>
+```
+
+Then apply all pending migrations:
+
+```bash
+npx supabase db push
+```
+
+Migrations live in `supabase/migrations/` and must be pushed manually — they do not auto-apply on git push.
 
 ## Project Structure
 
