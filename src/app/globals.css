@@ -6,7 +6,8 @@
 @theme inline {
   --color-background: #f9fafb;
   --color-foreground: #171717;
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-bricolage);
   --font-mono: var(--font-geist-mono);
 }
 

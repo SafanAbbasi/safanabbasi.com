@@ -168,15 +168,24 @@ export default function SkillsSection() {
   return (
     <section id="skills" className="py-20 md:py-28">
       <div className="mx-auto max-w-4xl px-6">
-        <motion.h2
-          className="mb-10 text-center text-3xl font-bold text-gray-900 dark:text-white"
+        <motion.div
+          className="mb-10 flex items-center gap-6"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          Skills & Technologies
-        </motion.h2>
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-gray-300 dark:to-white/20" />
+          <div className="flex flex-col items-center">
+            <h2 className="font-display text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+              Skills & Technologies
+            </h2>
+            <span className="mt-1 font-mono text-[10px] tracking-[0.5em] uppercase text-teal-600/60 dark:text-teal-400/60">
+              Tech stack
+            </span>
+          </div>
+          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-gray-300 dark:to-white/20" />
+        </motion.div>
 
         <div className="grid gap-8 md:grid-cols-2">
           {skillGroups.map((group, gi) => (

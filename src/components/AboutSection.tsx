@@ -25,15 +25,24 @@ export default function AboutSection({
   return (
     <section id="about" className="py-20 md:py-28">
       <div className="mx-auto max-w-3xl px-6">
-        <motion.h2
-          className="mb-8 text-center text-3xl font-bold text-gray-900 dark:text-white"
+        <motion.div
+          className="mb-8 flex items-center gap-6"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          About Me
-        </motion.h2>
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-gray-300 dark:to-white/20" />
+          <div className="flex flex-col items-center">
+            <h2 className="font-display text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+              About Me
+            </h2>
+            <span className="mt-1 font-mono text-[10px] tracking-[0.5em] uppercase text-teal-600/60 dark:text-teal-400/60">
+              Who I am
+            </span>
+          </div>
+          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-gray-300 dark:to-white/20" />
+        </motion.div>
 
         <motion.p
           className="mx-auto max-w-2xl text-center text-lg leading-relaxed text-gray-600 dark:text-gray-300"

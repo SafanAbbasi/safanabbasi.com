@@ -101,7 +101,7 @@ export default function ProfileHeader({
       </motion.div>
 
       {/* Bold greeting — typewriter */}
-      <h1 className="mt-4 text-center text-3xl font-bold text-gray-900 md:text-4xl dark:text-white">
+      <h1 className="mt-4 text-center font-display text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
         <TypewriterText
           text={profile.greeting}
           speed={60}

@@ -252,7 +252,7 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
             { Icon: GitOriginal, label: "Git", x: "84%", y: "65%", duration: 6, delay: 0.9 },
             { Icon: SiRust, label: "Rust", x: "10%", y: "45%", duration: 5, delay: 1.3, color: "#CE422B" },
             { Icon: GooglecloudOriginal, label: "GCP", x: "6%", y: "85%", duration: 6, delay: 0.2 },
-            { Icon: SiOpenai, label: "OpenAI", x: "90%", y: "85%", duration: 5.5, delay: 1.0, color: "#412991" },
+            { Icon: SiOpenai, label: "OpenAI", x: "90%", y: "85%", duration: 5.5, delay: 1.0, color: "#10A37F" },
           ].map(({ Icon, label, x, y, duration, delay, color }: { Icon: React.FC<{ className?: string; size?: number }>; label: string; x: string; y: string; duration: number; delay: number; color?: string }, i: number) => (
             <motion.div
               key={i}
@@ -260,8 +260,8 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
               style={{ left: x, top: y, ...(color ? { color } : {}) }}
               animate={
                 reduceMotion
-                  ? { y: 0, opacity: 0.5 }
-                  : { y: [0, -12, 0], opacity: [0.4, 0.6, 0.4] }
+                  ? { y: 0, opacity: 0.7 }
+                  : { y: [0, -12, 0], opacity: [0.6, 0.85, 0.6] }
               }
               transition={
                 reduceMotion
