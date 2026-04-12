@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, type ReactNode } from "react";
+import { useState, useRef, useEffect, useCallback, type ReactNode } from "react";
 import {
   motion,
   AnimatePresence,
@@ -10,20 +10,19 @@ import {
 } from "motion/react";
 import { SiOpenai, SiRust } from "react-icons/si";
 import { FaAws } from "react-icons/fa";
-import {
-  PythonOriginal,
-  DockerOriginal,
-  AzureOriginal,
-  ReactOriginal,
-  TypescriptOriginal,
-  KubernetesOriginal,
-  DotNetOriginal,
-  PostgresqlOriginal,
-  GitOriginal,
-  TerraformOriginal,
-  AngularOriginal,
-  GooglecloudOriginal,
-} from "devicons-react";
+import dynamic from "next/dynamic";
+import PythonOriginal from "devicons-react/lib/icons/PythonOriginal";
+import DockerOriginal from "devicons-react/lib/icons/DockerOriginal";
+import AzureOriginal from "devicons-react/lib/icons/AzureOriginal";
+import ReactOriginal from "devicons-react/lib/icons/ReactOriginal";
+import TypescriptOriginal from "devicons-react/lib/icons/TypescriptOriginal";
+import KubernetesOriginal from "devicons-react/lib/icons/KubernetesOriginal";
+import DotNetOriginal from "devicons-react/lib/icons/DotNetOriginal";
+import PostgresqlOriginal from "devicons-react/lib/icons/PostgresqlOriginal";
+import GitOriginal from "devicons-react/lib/icons/GitOriginal";
+import TerraformOriginal from "devicons-react/lib/icons/TerraformOriginal";
+import AngularOriginal from "devicons-react/lib/icons/AngularOriginal";
+import GooglecloudOriginal from "devicons-react/lib/icons/GooglecloudOriginal";
 
 import ProfileHeader from "./ProfileHeader";
 import AnimatedLinks from "./AnimatedLinks";
@@ -33,7 +32,9 @@ import ProjectsGrid from "./ProjectsGrid";
 import SkillsSection from "./SkillsSection";
 import ContactSection from "./ContactSection";
 import SectionDivider from "./SectionDivider";
-import ExperienceDrawer from "./ExperienceDrawer";
+const ExperienceDrawer = dynamic(() => import("./ExperienceDrawer"), {
+  ssr: false,
+});
 import ThemeToggle from "./ThemeToggle";
 import type { LinkItem } from "@/data/links";
 
@@ -80,7 +81,7 @@ function ParallaxSection({
 export default function InteractivePage({ links }: { links: LinkItem[] }) {
   const reduceMotion = useReducedMotion() ?? false;
   const [shouldAnimate] = useState(() => !_hasPlayed);
-  const [mousePos, setMousePos] = useState({ x: -500, y: -500 });
+  const spotlightRef = useRef<HTMLDivElement>(null);
   const [showScrollHint, setShowScrollHint] = useState(true);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [timelineOpen, setTimelineOpen] = useState(false);
@@ -95,9 +96,13 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    setMousePos({ x: e.clientX, y: e.clientY });
-  };
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    const el = spotlightRef.current;
+    if (el) {
+      el.style.left = `${e.clientX - 250}px`;
+      el.style.top = `${e.clientY - 250}px`;
+    }
+  }, []);
 
   return (
     <main
@@ -211,10 +216,11 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
 
         {/* Cursor spotlight — hidden on touch devices */}
         <div
-          className="absolute hidden rounded-full transition-all duration-150 md:block"
+          ref={spotlightRef}
+          className="absolute hidden rounded-full transition-[left,top] duration-150 md:block"
           style={{
-            left: mousePos.x - 250,
-            top: mousePos.y - 250,
+            left: -500,
+            top: -500,
             width: 500,
             height: 500,
             position: "fixed",

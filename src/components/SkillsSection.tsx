@@ -31,7 +31,7 @@ import {
 } from "react-icons/si";
 import { FaAws, FaDatabase } from "react-icons/fa";
 import { VscAzure, VscAzureDevops } from "react-icons/vsc";
-import { GooglecloudOriginal } from "devicons-react";
+import GooglecloudOriginal from "devicons-react/lib/icons/GooglecloudOriginal";
 
 function IconCursor({ className }: { className?: string }) {
   return (
