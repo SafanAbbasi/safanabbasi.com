@@ -217,7 +217,7 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
         {/* Cursor spotlight — hidden on touch devices */}
         <div
           ref={spotlightRef}
-          className="absolute hidden rounded-full transition-[left,top] duration-150 md:block"
+          className="absolute hidden rounded-full md:block"
           style={{
             left: -500,
             top: -500,
