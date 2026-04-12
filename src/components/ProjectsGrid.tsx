@@ -46,7 +46,7 @@ const projects = [
     tech: ["Next.js", "React", "Supabase", "Motion", "Tailwind"],
     icon: FaCode,
     color: "#3b82f6",
-    link: "https://github.com/SafanAbbasi/linkpage",
+    link: "https://github.com/SafanAbbasi/safanabbasi.com",
     linkLabel: "View Source",
   },
 ];
