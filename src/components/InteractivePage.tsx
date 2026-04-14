@@ -428,7 +428,7 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
             )}
 
           {/* Wider centered layout with 2-col links */}
-          <div className="w-full max-w-3xl">
+          <div className="w-full max-w-3xl pb-20">
             <ProfileHeader
               shouldAnimate={shouldAnimate && !reduceMotion}
               isDesktop={isDesktop}
@@ -444,7 +444,7 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
             {showScrollHint && (
               <motion.a
                 href="#about"
-                className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 cursor-pointer flex-col items-center gap-2 transition-colors hover:text-teal-500 sm:flex dark:hover:text-teal-400"
+                className="absolute bottom-8 left-1/2 flex -translate-x-1/2 cursor-pointer flex-col items-center gap-2 transition-colors hover:text-teal-500 dark:hover:text-teal-400"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
