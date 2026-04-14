@@ -54,8 +54,10 @@ function TypewriterText({
 
 export default function ProfileHeader({
   shouldAnimate = true,
+  isDesktop = false,
 }: {
   shouldAnimate?: boolean;
+  isDesktop?: boolean;
 }) {
   const [imgError, setImgError] = useState(false);
   const initials = profile.name
@@ -68,13 +70,25 @@ export default function ProfileHeader({
       {/* Floating avatar with glowing ring */}
       <motion.div
         className="relative"
-        animate={{ y: [0, -8, 0] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        animate={isDesktop ? { y: [0, -8, 0] } : { y: 0 }}
+        transition={
+          isDesktop
+            ? { duration: 3, repeat: Infinity, ease: "easeInOut" }
+            : { duration: 0 }
+        }
       >
         <motion.div
           className="absolute -inset-2 rounded-full bg-teal-400/25 blur-lg dark:bg-teal-400/30"
-          animate={{ opacity: [0.2, 0.5, 0.2], scale: [1, 1.15, 1] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          animate={
+            isDesktop
+              ? { opacity: [0.2, 0.5, 0.2], scale: [1, 1.15, 1] }
+              : { opacity: 0.2, scale: 1 }
+          }
+          transition={
+            isDesktop
+              ? { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
+              : { duration: 0 }
+          }
         />
         <div
           className="relative h-[170px] w-[170px] overflow-hidden rounded-full p-1 shadow-lg shadow-teal-500/25"
@@ -151,7 +165,6 @@ export default function ProfileHeader({
       >
         {profile.bio}
       </motion.p>
-
     </div>
   );
 }

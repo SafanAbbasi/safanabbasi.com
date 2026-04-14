@@ -429,7 +429,10 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
 
           {/* Wider centered layout with 2-col links */}
           <div className="w-full max-w-3xl">
-            <ProfileHeader shouldAnimate={shouldAnimate && !reduceMotion} />
+            <ProfileHeader
+              shouldAnimate={shouldAnimate && !reduceMotion}
+              isDesktop={isDesktop}
+            />
             <AnimatedLinks
               links={links}
               shouldAnimate={shouldAnimate && !reduceMotion}
