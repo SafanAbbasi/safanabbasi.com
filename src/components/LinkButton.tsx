@@ -56,16 +56,17 @@ export default function LinkButton({ link }: { link: LinkItem }) {
         x,
         y,
         angle: (360 / 10) * i + Math.random() * 20 - 10,
-        color: particleColors[Math.floor(Math.random() * particleColors.length)],
+        color:
+          particleColors[Math.floor(Math.random() * particleColors.length)],
       }));
       setParticles((prev) => [...prev, ...newParticles]);
       setTimeout(() => {
         setParticles((prev) =>
-          prev.filter((p) => !newParticles.some((np) => np.id === p.id))
+          prev.filter((p) => !newParticles.some((np) => np.id === p.id)),
         );
       }, 700);
     },
-    [link.id]
+    [link.id],
   );
 
   return (
@@ -75,13 +76,6 @@ export default function LinkButton({ link }: { link: LinkItem }) {
         target="_blank"
         rel="noopener noreferrer"
         onClick={(e) => {
-          const isTouchDevice =
-            typeof window !== "undefined" &&
-            window.matchMedia("(hover: none), (pointer: coarse)").matches;
-          if (isTouchDevice && link.description) {
-            setIsFlipped(true);
-            setTimeout(() => setIsFlipped(false), 2000);
-          }
           handleClick(e);
         }}
         onMouseEnter={() => setIsFlipped(true)}
