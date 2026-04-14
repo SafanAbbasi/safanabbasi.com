@@ -57,29 +57,32 @@ const floatingShapes = [
   { size: 10, x: "12%", y: "45%", duration: 7.5 },
 ];
 
-function ParallaxSection({
-  children,
-  reduceMotion,
-}: {
-  children: ReactNode;
-  reduceMotion: boolean;
-}) {
+function ParallaxSectionAnimated({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
-  const y = useTransform(
-    scrollYProgress,
-    [0, 1],
-    reduceMotion ? [0, 0] : [40, -40],
-  );
+  const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   return (
     <div ref={ref}>
       <motion.div style={{ y }}>{children}</motion.div>
     </div>
   );
+}
+
+function ParallaxSection({
+  children,
+  reduceMotion,
+  enabled,
+}: {
+  children: ReactNode;
+  reduceMotion: boolean;
+  enabled: boolean;
+}) {
+  if (!enabled || reduceMotion) return <>{children}</>;
+  return <ParallaxSectionAnimated>{children}</ParallaxSectionAnimated>;
 }
 
 export default function InteractivePage({ links }: { links: LinkItem[] }) {
@@ -473,19 +476,19 @@ export default function InteractivePage({ links }: { links: LinkItem[] }) {
 
         {/* Portfolio sections */}
         <SectionDivider />
-        <ParallaxSection reduceMotion={reduceMotion}>
+        <ParallaxSection reduceMotion={reduceMotion} enabled={isDesktop}>
           <AboutSection onOpenTimeline={() => setTimelineOpen(true)} />
         </ParallaxSection>
         <SectionDivider />
-        <ParallaxSection reduceMotion={reduceMotion}>
+        <ParallaxSection reduceMotion={reduceMotion} enabled={isDesktop}>
           <ProjectsGrid />
         </ParallaxSection>
         <SectionDivider />
-        <ParallaxSection reduceMotion={reduceMotion}>
+        <ParallaxSection reduceMotion={reduceMotion} enabled={isDesktop}>
           <SkillsSection />
         </ParallaxSection>
         <SectionDivider />
-        <ParallaxSection reduceMotion={reduceMotion}>
+        <ParallaxSection reduceMotion={reduceMotion} enabled={isDesktop}>
           <ContactSection />
         </ParallaxSection>
       </div>
