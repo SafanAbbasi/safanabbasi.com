@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { useTheme } from "next-themes";
+import { Sun, Moon } from "lucide-react";
 
 const sections = [
   { id: "about", label: "About" },
@@ -13,6 +15,7 @@ const sections = [
 export default function ScrollNav() {
   const [visible, setVisible] = useState(false);
   const [active, setActive] = useState("");
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,6 +58,18 @@ export default function ScrollNav() {
               {s.label}
             </a>
           ))}
+          <div className="mx-1 h-4 w-px bg-gray-200 dark:bg-white/20" />
+          <button
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="flex h-7 w-7 items-center justify-center rounded-full transition-colors hover:bg-gray-100 dark:hover:bg-white/10"
+            aria-label="Toggle theme"
+          >
+            {theme === "dark" ? (
+              <Sun className="h-3.5 w-3.5 text-yellow-400" />
+            ) : (
+              <Moon className="h-3.5 w-3.5 text-gray-500" />
+            )}
+          </button>
         </motion.nav>
       )}
     </AnimatePresence>
