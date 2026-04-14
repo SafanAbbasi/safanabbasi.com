@@ -3,15 +3,18 @@ import { createServiceSupabaseClient } from "@/lib/supabase/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   const { slug } = await params;
   const supabase = createServiceSupabaseClient();
 
   if (!supabase) {
-    return new NextResponse("Short links unavailable: missing SUPABASE_SECRET_KEY", {
-      status: 503,
-    });
+    return new NextResponse(
+      "Short links unavailable: missing SUPABASE_SECRET_KEY",
+      {
+        status: 503,
+      },
+    );
   }
 
   const { data: redirect, error } = await supabase
@@ -21,7 +24,7 @@ export async function GET(
     .maybeSingle();
 
   if (error || !redirect) {
-    return new NextResponse("Not found", { status: 404 });
+    return NextResponse.redirect(new URL("/_not-found", request.url));
   }
 
   const { error: insertError } = await supabase.from("clicks").insert({
