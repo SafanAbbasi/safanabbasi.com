@@ -32,6 +32,15 @@ export const metadata: Metadata = {
     title: site.pageTitle,
     description: site.description,
     type: "website",
+    url: site.canonicalUrl,
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: site.pageTitle,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -52,9 +61,7 @@ export default function RootLayout({
       className={`${bricolage.variable} ${dmSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Providers>
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
         <Analytics />
         <SpeedInsights />
         <script
@@ -65,18 +72,19 @@ export default function RootLayout({
               "@graph": [
                 {
                   "@type": "WebSite",
-                  "name": site.personName,
-                  "url": site.canonicalUrl,
+                  name: site.personName,
+                  url: site.canonicalUrl,
                 },
                 {
                   "@type": "Person",
-                  "name": site.personName,
-                  "url": site.canonicalUrl,
-                  "jobTitle": site.jobTitle,
-                  "description": site.description,
-                  "sameAs": [...site.sameAs],
-                  "knowsAbout": [...site.knowsAbout],
-                  "hasCredential": site.credentials.map((name) => ({
+                  name: site.personName,
+                  url: site.canonicalUrl,
+                  image: `${site.canonicalUrl}/opengraph-image.png`,
+                  jobTitle: site.jobTitle,
+                  description: site.description,
+                  sameAs: [...site.sameAs],
+                  knowsAbout: [...site.knowsAbout],
+                  hasCredential: site.credentials.map((name) => ({
                     "@type": "EducationalOccupationalCredential",
                     name,
                   })),
